@@ -70,5 +70,15 @@
 	  <artifactId>google-api-client-servlet</artifactId>
 	  <version>1.20.0</version>
 	</dependency>
+	<dependency>
+		<groupId>com.google.oauth-client</groupId>
+		<artifactId>google-oauth-client-jetty</artifactId>
+		<version>1.21.0</version>
+	</dependency>
+	<dependency>
+		<groupId>com.google.apis</groupId>
+		<artifactId>google-api-services-people</artifactId>
+		<version>v1-rev2-1.21.0</version>
+	</dependency>
   </dependencies>
 </project>
