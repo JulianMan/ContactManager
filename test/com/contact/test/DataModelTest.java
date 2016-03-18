@@ -66,4 +66,20 @@ public class DataModelTest {
 		List<Person> persons = Person.fromJson(json);
 		Assert.assertTrue(persons.contains(person2) && !persons.contains(person1));
 	}
+	
+	@Test
+	public void storePersonAttributes()
+	{
+		Person person = new Person();
+		person.setFirstName("Julian");
+		person.setLastName("Man");
+		person.setUserId(0);
+		person.getAttributes().put("Intelligence", "Ridiculously high");
+		person.getAttributes().put("Modesty", "Also ridiculously high");
+		
+		DataModel.getInstance().create(person);
+		String json = DataModel.getInstance().read(ITables.PERSON_TABLE, 0);
+		List<Person> persons = Person.fromJson(json);
+		Assert.assertTrue(persons.contains(person));
+	}
 }
