@@ -1,0 +1,56 @@
+package com.contact.manager;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.contact.data.CalendarEntry;
+import com.contact.manager.data.DataModel;
+import com.contact.manager.data.ITables;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+public class TimeManager {
+	
+	private static TimeManager instance = null;
+	
+	protected DataModel dataModel = DataModel.getInstance();
+	
+	private TimeManager()
+	{
+	}
+	
+	public static TimeManager getInstance()
+	{
+		if(instance == null)
+		{
+			instance = new TimeManager();
+		}
+		return instance;
+	}
+	
+	public boolean createCalendarEntry(CalendarEntry ce)
+	{
+		boolean success = dataModel.create(ce);
+		return success;
+	}
+	
+	public List<CalendarEntry> readCalendarEntry(int userId)
+	{
+		String json = dataModel.read(ITables.CALENDAR_ENTRY_TABLE, userId);
+		Gson gson = new Gson();
+		List<CalendarEntry> calendarEntries = gson.fromJson(json, new TypeToken<ArrayList<CalendarEntry>>(){}.getType());
+		return calendarEntries;
+	}
+	
+	public boolean updateCalendarEntry(CalendarEntry ce)
+	{
+		boolean success = dataModel.update(ce);
+		return success;
+	}
+	
+	public boolean deleteCalendarEntry(CalendarEntry ce)
+	{
+		boolean success = dataModel.delete(ce);
+		return success;
+	}
+}
