@@ -10,8 +10,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 public class Person {
-	private String firstName;
-	private String lastName;
+	private String name;
 	private int userId;
 	private int personId;
 	
@@ -22,20 +21,12 @@ public class Person {
 		
 	}
 
-	public String getFirstName() {
-		return firstName;
+	public String getName() {
+		return name;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public int getUserId() {
@@ -63,6 +54,16 @@ public class Person {
 	{
 		this.attributes = attributes;
 	}
+	
+	public String getAttribute(String key)
+	{
+		return this.attributes.get(key);
+	}
+	
+	public void setAttribute(String key, String value)
+	{
+		this.attributes.put(key, value);
+	}
 
 	public String toJson() {
 		Gson gson = new Gson();
@@ -82,10 +83,7 @@ public class Person {
 		{
 			Person otherPerson = (Person) other;
 			return this.userId == otherPerson.userId
-					&& (this.personId == otherPerson.personId
-					|| (Objects.equal(this.firstName, otherPerson.firstName)
-					&& Objects.equal(this.lastName, otherPerson.lastName)
-					&& Objects.equal(this.attributes, otherPerson.attributes)));
+					&& (this.personId == otherPerson.personId);
 		}
 		return false;
 	}

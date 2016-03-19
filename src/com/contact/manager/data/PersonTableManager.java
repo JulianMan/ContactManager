@@ -12,13 +12,13 @@ import com.contact.data.Person;
 public class PersonTableManager extends TableManager<Person> {
 	
 	private static final String INSERT_QUERY = "insert into person "
-			+ "(user_id,first_name,last_name) values "
+			+ "(user_id,name) values "
 			+ "(?,?,?)";
 	private static final String SELECT_QUERY = 
-			"select person_id, user_id, first_name, last_name from person where "
+			"select person_id, user_id, name from person where "
 			+ "user_id = ?";
 	private static final String UPDATE_QUERY = "update person set "
-			+ "first_name = ?, last_name = ? where "
+			+ "name = ? where "
 			+ "user_id = ? and person_id = ?";
 	private static final String DELETE_QUERY = "delete from person where "
 			+ "user_id = ? and person_id = ?";
@@ -35,8 +35,7 @@ public class PersonTableManager extends TableManager<Person> {
 			PreparedStatement pstmt = connection.prepareStatement(INSERT_QUERY);
 			int idx = 1;
 			pstmt.setInt(idx++, t.getUserId());
-			pstmt.setString(idx++, t.getFirstName());
-			pstmt.setString(idx++, t.getLastName());
+			pstmt.setString(idx++, t.getName());
 			return pstmt.execute();
 		}
 		catch(SQLException e)
@@ -68,8 +67,7 @@ public class PersonTableManager extends TableManager<Person> {
 		Person person = new Person();
 		person.setUserId(rs.getInt("user_id"));
 		person.setPersonId(rs.getInt("person_id"));
-		person.setFirstName(rs.getString("first_name"));
-		person.setLastName(rs.getString("last_name"));
+		person.setName(rs.getString("name"));
 		return person;
 	}
 
@@ -79,8 +77,7 @@ public class PersonTableManager extends TableManager<Person> {
 		{
 			PreparedStatement pstmt = connection.prepareStatement(UPDATE_QUERY);
 			int idx = 1;
-			pstmt.setString(idx++,t.getFirstName());
-			pstmt.setString(idx++,t.getLastName());
+			pstmt.setString(idx++,t.getName());
 			pstmt.setInt(idx++, t.getUserId());
 			pstmt.setInt(idx++, t.getPersonId());
 			return pstmt.execute();

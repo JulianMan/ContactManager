@@ -1,26 +1,26 @@
-package com.contact.manager;
+package com.contact.person;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import com.contact.data.Person;
 import com.contact.event.EventBus;
+import com.contact.event.FriendAddedEvent;
 import com.contact.event.PersonCreatedEvent;
+import com.contact.manager.Manager;
 import com.contact.manager.data.DataModel;
 import com.contact.manager.data.ITables;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-public class PersonManager {
+public class PersonManager extends Manager {
 	
 	private static PersonManager instance = null;
 	
-	protected DataModel dataModel = DataModel.getInstance();
-	protected EventBus eventBus = EventBus.getInstance();
-	
 	private PersonManager()
 	{
-		
+		eventBus.addListener(FriendAddedEvent.class, new FriendAddedEventListener());
 	}
 	
 	public static PersonManager getInstance()
@@ -53,9 +53,10 @@ public class PersonManager {
 	public boolean update(Person person)
 	{
 		boolean success = dataModel.update(person);
+		logger.info("Updated Person: " + person.toJson());
 		if(success)
 		{
-			// broadcast event
+			// TODO: broadcast event
 		}
 		return success;
 	}
@@ -65,7 +66,7 @@ public class PersonManager {
 		boolean success = dataModel.delete(person);
 		if(success)
 		{
-			// broadcast event
+			// TODO: broadcast event
 		}
 		return success;
 	}
