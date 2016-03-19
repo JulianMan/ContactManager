@@ -1,9 +1,6 @@
-package com.contact.manager;
+package com.contact.social;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -11,12 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
 import com.google.api.client.extensions.servlet.auth.oauth2.AbstractAuthorizationCodeServlet;
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.http.GenericUrl;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.client.util.store.MemoryDataStoreFactory;
-import com.google.api.services.people.v1.PeopleScopes;
 
 @WebServlet("/GoogleOAuthServerlet")
 public class GoogleOAuthServerlet extends AbstractAuthorizationCodeServlet {
@@ -36,18 +28,7 @@ public class GoogleOAuthServerlet extends AbstractAuthorizationCodeServlet {
 
 	  @Override
 	  protected AuthorizationCodeFlow initializeFlow() throws IOException {
-		// TODO: Use a persistent data store
-		MemoryDataStoreFactory memoryDataStoreFactory = MemoryDataStoreFactory.getDefaultInstance();
-		
-	    return new GoogleAuthorizationCodeFlow.Builder(
-		        new NetHttpTransport(), 
-		        JacksonFactory.getDefaultInstance(),
-		        "925627078368-9fm960o4pf3u85m51r3vf317oodo6rda.apps.googleusercontent.com", 
-		        "C5rdBzegjjnrH-wCyBcjfJ_D",
-		        Collections.singleton(PeopleScopes.CONTACTS_READONLY)
-	        ).setDataStoreFactory(memoryDataStoreFactory)
-	    		.setAccessType("offline")
-	    		.build();
+		return GoogleContactManager.authorizationCodeFlow();
 	  }
 
 	  @Override
