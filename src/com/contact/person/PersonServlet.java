@@ -16,8 +16,8 @@ import com.google.gson.Gson;
 /**
  * Servlet implementation class PersonServerlet
  */
-@WebServlet("/PersonServerlet")
-public class PersonServerlet extends HttpServlet {
+@WebServlet("/PersonServlet")
+public class PersonServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private PersonManager personManager = PersonManager.getInstance();
 	private Gson gson = new Gson();
@@ -25,7 +25,7 @@ public class PersonServerlet extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public PersonServerlet() {
+    public PersonServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
