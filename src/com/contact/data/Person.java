@@ -14,7 +14,7 @@ public class Person {
 	private int userId;
 	private int personId;
 	
-	private Map<String,String> attributes = new HashMap<>();
+	private Map<String,Attribute> attributes = new HashMap<>();
 	
 	public Person()
 	{
@@ -45,24 +45,24 @@ public class Person {
 		this.personId = personId;
 	}
 	
-	public Map<String,String> getAttributes()
+	public Map<String,Attribute> getAttributes()
 	{
 		return attributes;
 	}
 	
-	public void setAttributes(Map<String,String> attributes)
+	public void setAttributes(Map<String,Attribute> attributes)
 	{
 		this.attributes = attributes;
 	}
 	
-	public String getAttribute(String key)
+	public Attribute getAttribute(String key)
 	{
 		return this.attributes.get(key);
 	}
 	
-	public void setAttribute(String key, String value)
+	public void setAttribute(Attribute attribute)
 	{
-		this.attributes.put(key, value);
+		this.attributes.put(attribute.getName(), attribute);
 	}
 
 	public String toJson() {

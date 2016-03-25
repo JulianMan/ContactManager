@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.management.Attribute;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.contact.event.EventBus;
 import com.contact.event.FriendAddedEvent;
 import com.contact.person.PersonManager;
+import com.contact.utils.RequestHandler;
 import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
 import com.google.api.client.auth.oauth2.AuthorizationCodeResponseUrl;
 import com.google.api.client.auth.oauth2.Credential;
@@ -57,10 +59,12 @@ public class GoogleOAuthServerletCallback extends AbstractAuthorizationCodeCallb
                 	String googleContactName = googlePerson.getNames().get(0).getDisplayName();
                 	logger.info("Found google contact: " + googleContactName);
                 	contactManagerPerson.setName(googleContactName);
+                	contactManagerPerson.setUserId(RequestHandler.getUserId(req));
                 	
                     for(String key : googlePerson.keySet()) {
                     	// TODO: Will this toString() burn us?
-                    	contactManagerPerson.setAttribute(key, googlePerson.get(key).toString());
+                    	com.contact.data.Attribute attribute = new com.contact.data.Attribute(key, googlePerson.get(key).toString());
+                    	contactManagerPerson.setAttribute(attribute);
                     }
                     
                     FriendAddedEvent event = new FriendAddedEvent(contactManagerPerson);

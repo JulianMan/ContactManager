@@ -10,6 +10,7 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.util.store.DataStoreFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
+import com.google.api.client.util.store.MemoryDataStoreFactory;
 import com.google.api.services.people.v1.People;
 import com.google.api.services.people.v1.PeopleScopes;
 import java.io.IOException;
@@ -45,7 +46,8 @@ public class GoogleContactManager {
         try {
             HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
             // TODO: Change to be database backed
-            DATA_STORE_FACTORY = new FileDataStoreFactory(DATA_STORE_DIR);
+            // DATA_STORE_FACTORY = new FileDataStoreFactory(DATA_STORE_DIR);
+            DATA_STORE_FACTORY = MemoryDataStoreFactory.getDefaultInstance();
         } catch (Throwable t) {
             t.printStackTrace();
             System.exit(1);
