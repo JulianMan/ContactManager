@@ -79,3 +79,7 @@ body {
   background-color: #218CC2;
   color: #fff;
 }
+
+.form-horizontal .control-label {
+  text-align:left;
+}
