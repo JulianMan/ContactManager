@@ -11,21 +11,6 @@ import java.util.Map;
 
 import com.contact.data.Attribute;
 import com.contact.data.Person;
-<<<<<<< HEAD
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-public class PersonTableManager extends TableManager<Person> {
-	
-	private static final String INSERT_QUERY = "insert into person "
-			+ "(user_id,first_name,last_name,attributes) values "
-			+ "(?,?,?,?)";
-	private static final String SELECT_QUERY = 
-			"select person_id, user_id, first_name, last_name, attributes "
-			+ "from person where user_id = ?";
-	private static final String UPDATE_QUERY = "update person set "
-			+ "first_name = ?, last_name = ?, attributes = ? where "
-=======
 import com.mysql.jdbc.Statement;
 
 public class PersonTableManager extends TableManager<Person> {
@@ -41,7 +26,6 @@ public class PersonTableManager extends TableManager<Person> {
 			+ "where user_id = ?";
 	private static final String UPDATE_PERSON_QUERY = "update person set "
 			+ "name = ? where "
->>>>>>> master
 			+ "user_id = ? and person_id = ?";
 	private static final String DELETE_PERSON_QUERY = "DELETE person, person_attributes "
 			+ "FROM person  INNER JOIN person_attributes  "
@@ -67,14 +51,6 @@ public class PersonTableManager extends TableManager<Person> {
 		{
 			PreparedStatement person_statement = connection.prepareStatement(INSERT_PERSON_QUERY, Statement.RETURN_GENERATED_KEYS);
 			int idx = 1;
-<<<<<<< HEAD
-			pstmt.setInt(idx++, t.getUserId());
-			pstmt.setString(idx++, t.getFirstName());
-			pstmt.setString(idx++, t.getLastName());
-			Gson gson = new Gson();
-			pstmt.setString(idx++, gson.toJson(t.getAttributes()));
-			return pstmt.execute();
-=======
 			person_statement.setInt(idx++, t.getUserId());
 			person_statement.setString(idx++, t.getName());
 			
@@ -90,7 +66,6 @@ public class PersonTableManager extends TableManager<Person> {
 			}
 			
 			return true;
->>>>>>> master
 		}
 		catch(SQLException e)
 		{
@@ -124,26 +99,7 @@ public class PersonTableManager extends TableManager<Person> {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-<<<<<<< HEAD
-		return people;
-	}
-	
-	protected Person personFromResultSet(ResultSet rs) throws SQLException
-	{
-		Person person = new Person();
-		person.setUserId(rs.getInt("user_id"));
-		person.setPersonId(rs.getInt("person_id"));
-		person.setFirstName(rs.getString("first_name"));
-		person.setLastName(rs.getString("last_name"));
-		Gson gson = new Gson();
-		String json = rs.getString("attributes");
-		HashMap<String,String> attributes = gson.fromJson(json, 
-				new TypeToken<HashMap<String,String>>(){}.getType());
-		person.setAttributes(attributes);
-		return person;
-=======
 		return new ArrayList<Person>(people.values());
->>>>>>> master
 	}
 
 	@Override
