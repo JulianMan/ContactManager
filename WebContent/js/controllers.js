@@ -21,9 +21,10 @@ contactManagerControllers.controller('ContactDetailCtrl', function ($scope, $rou
 		$scope.leftLimit = Math.ceil(Object.keys(data.attributes).length/2);
 		$scope.rightLimit = Math.floor(Object.keys(data.attributes).length/2) + $scope.leftLimit;
 		
-		//console.log ($scope.person.attributes._photo);
-		//console.log (Object.keys(data.attributes).length);
-		//console.log ("right: " + $scope.rightLimit + ", left: " + $scope.leftLimit);
+		// Contact Form initial values - show edit button, hide edit form
+		$scope.editContact = false;
+		$scope.editButton = true;
+
 	});
 	
 	$scope.personId = id;
