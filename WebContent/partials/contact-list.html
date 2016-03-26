@@ -1,0 +1,43 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-3">
+      <!--Sidebar content-->
+      
+      <div class="panel panel-default panel-blue">
+        <!-- Default panel contents -->
+        <div class="panel-heading">Welcome, Michal</div>
+        <div class="panel-body">
+          <p>Sort Contact By:</p>
+          <select class="form-control" ng-model="orderProp">
+            <option value="name">Alphabetical</option>
+            <option value="personId">Newest</option>
+          </select>
+        </div>
+      
+        <!-- List group -->
+        <ul class="list-group">
+          <li class="list-group-item">Quick Reminder</li>
+          <li class="list-group-item">Add New Contact</li>
+          <li class="list-group-item">Add Event</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-md-9">
+      <!--Body content-->
+      <div class="contacts panel panel-default" ng-repeat="contact in contacts | filter:query | orderBy:orderProp">
+        <div class="panel-body thin">
+          <div class="row">
+            <!-- <div class="col-sm-1"><a href="#/contact/{{contact.id}}" class="thumb"><img class="thumb" ng-src="{{contact.imageUrl}}" alt="{{contact.name}}"></a></div>  -->
+            <div class="col-sm-2 panel-thumb"><a href="#/contact/{{contact.personId}}" ><img class="thumb" ng-src="{{contact.attributes._photo === undefined && 'img/default-thumb.png' || contact.attributes._photo.attributeValue}}"></a></div>
+            <div class="col-sm-3 contact-name"><a href="#/contact/{{contact.personId}}">{{contact.name}}</a></div>
+            <div class="col-sm-4 contact-name"><a href="#/contact/{{contact.personId}}">{{contact.attributes.Email.attributeValue}}</a></div>
+            <div class="col-sm-3 contact-name"><a href="#/contact/{{contact.personId}}">{{contact.attributes.Phone.attributeValue}}</a></div>
+          </div>
+          <!-- <p>{{contact.snippet}}</p> -->
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
