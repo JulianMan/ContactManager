@@ -24,6 +24,7 @@ public class PersonTableManager extends TableManager<Person> {
 			+ "from person left join person_attributes "
 			+ "on person.person_id = person_attributes.person_id "
 			+ "where user_id = ?";
+	private static final String SELECT_PERSON_QUERY_EXTENSION = " and person.person_id = ?";
 	private static final String UPDATE_PERSON_QUERY = "update person set "
 			+ "name = ? where "
 			+ "user_id = ? and person_id = ?";
@@ -37,7 +38,7 @@ public class PersonTableManager extends TableManager<Person> {
 			+ "(person_id, name, value) values(?, ?, ?)";
 
 	private static final String UPDATE_ATTRIBUTE_QUERY = "update person_attributes "
-			+ "set name = ? and value = ? "
+			+ "set name = ?, value = ? "
 			+ "where id = ?";
 	
 	public PersonTableManager(Connection connection)
@@ -100,6 +101,33 @@ public class PersonTableManager extends TableManager<Person> {
 			e.printStackTrace();
 		}
 		return new ArrayList<Person>(people.values());
+	}
+	
+	public Person read(int userId, int personId) {
+		Person person = null;
+		try {
+			PreparedStatement stmt = connection.prepareStatement(SELECT_PERSON_QUERY + SELECT_PERSON_QUERY_EXTENSION);
+			stmt.setInt(1, userId);
+			stmt.setInt(2, personId);
+			ResultSet rs = stmt.executeQuery();
+			
+			rs.next();
+			person = personFromResultSet(rs);
+			
+			while(rs.next())
+			{
+				Person tempPerson = personFromResultSet(rs);
+				
+				Map<String, Attribute> attributes = tempPerson.getAttributes();
+					
+				for (String key : attributes.keySet()) {
+					person.setAttribute(attributes.get(key));;
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return person;
 	}
 
 	@Override

@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.contact.data.CalendarEntry;
 import com.contact.data.Person;
-import com.google.gson.Gson;
 
 public class DataModel {
 	private static DataModel instance = null;
@@ -58,20 +57,32 @@ public class DataModel {
 		return success;
 	}
 	// TODO: Remove magic strings, return "error" JSON
-	public String read(String table, int key)
+	@SuppressWarnings("unchecked")
+	public <T> List<T> read(Class<T> type, int userId)
 	{
-		Gson gson = new Gson();
-		if("person".equals(table))
+		if(type == Person.class)
 		{
-			List<Person> people = personTableManager.read(key);
-			return gson.toJson(people);
+			return (List<T>)personTableManager.read(userId);
 		}
-		else if("calendar_entry".equals(table))
+		else if(type == CalendarEntry.class)
 		{
-			List<CalendarEntry> calendarEntries = calendarEntryTableManager.read(key);
-			return gson.toJson(calendarEntries);
+			return (List<T>)calendarEntryTableManager.read(userId);
 		}
-		return "";
+		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T> T read(Class<T> type, int userId, int resourceId)
+	{
+		if(type == Person.class)
+		{
+			return (T)personTableManager.read(userId, resourceId);
+		}
+		else if(type == CalendarEntry.class)
+		{
+			return (T)calendarEntryTableManager.read(userId, resourceId);
+		}
+		return null;
 	}
 	
 	public boolean update(Object o)

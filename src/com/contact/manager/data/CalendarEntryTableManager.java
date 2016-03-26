@@ -19,6 +19,7 @@ public class CalendarEntryTableManager extends TableManager<CalendarEntry>{
 			+ "title,time,recurrence "
 			+ "from calendar_entry where "
 			+ "user_id = ?";
+	private static final String READ_QUERY_EXTENSION = " and entry_id = ?";
 	private static final String UPDATE_QUERY = "update calendar_entry set "
 			+ "title = ?, time = ?, recurrence = ? where "
 			+ "user_id = ? and entry_id = ?";
@@ -66,6 +67,27 @@ public class CalendarEntryTableManager extends TableManager<CalendarEntry>{
 			e.printStackTrace();
 		}
 		return calendarEntries;
+	}
+	
+	@Override
+	public CalendarEntry read(int userId, int resourceId) {
+		CalendarEntry calendarEntry = null;
+		try
+		{
+			PreparedStatement pstmt = connection.prepareStatement(READ_QUERY + READ_QUERY_EXTENSION);
+			pstmt.setInt(1, userId);
+			pstmt.setInt(2, resourceId);
+			ResultSet rs = pstmt.executeQuery();
+			rs.next();
+			calendarEntry = calendarEntryFromResultSet(rs);
+			
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return calendarEntry;
 	}
 	
 	protected CalendarEntry calendarEntryFromResultSet(ResultSet rs) throws SQLException

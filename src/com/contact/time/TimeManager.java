@@ -35,10 +35,7 @@ public class TimeManager extends Manager {
 	
 	public List<CalendarEntry> readCalendarEntry(int userId)
 	{
-		String json = dataModel.read(ITables.CALENDAR_ENTRY_TABLE, userId);
-		Gson gson = new Gson();
-		List<CalendarEntry> calendarEntries = gson.fromJson(json, new TypeToken<ArrayList<CalendarEntry>>(){}.getType());
-		return calendarEntries;
+		return dataModel.read(CalendarEntry.class, userId);
 	}
 	
 	public boolean updateCalendarEntry(CalendarEntry ce)

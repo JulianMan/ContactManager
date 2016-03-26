@@ -14,7 +14,9 @@ public abstract class TableManager<T>{
 	
 	public abstract boolean create(T t);
 	
-	public abstract List<T> read(int key);
+	public abstract List<T> read(int userId);
+	
+	public abstract T read(int userId, int resourceId);
 	
 	public abstract boolean update(T t);
 	

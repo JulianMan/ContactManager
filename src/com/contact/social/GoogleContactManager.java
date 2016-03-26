@@ -1,23 +1,19 @@
 package com.contact.social;
 
+import java.io.IOException;
+import java.util.Set;
+
 import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpTransport;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.DataStoreFactory;
-import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.client.util.store.MemoryDataStoreFactory;
 import com.google.api.services.people.v1.People;
 import com.google.api.services.people.v1.PeopleScopes;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
 
 public class GoogleContactManager {
     /** Application name. */
@@ -25,8 +21,8 @@ public class GoogleContactManager {
         "Contact Manager";
     
     /** Directory to store user credentials for this application. */
-    private static final java.io.File DATA_STORE_DIR = new java.io.File(
-        System.getProperty("user.home"), ".credentials/credential_store.json");
+    //private static final java.io.File DATA_STORE_DIR = new java.io.File(
+    //    System.getProperty("user.home"), ".credentials/credential_store.json");
 
     /** Persistent Data Store. */
     private static DataStoreFactory DATA_STORE_FACTORY;

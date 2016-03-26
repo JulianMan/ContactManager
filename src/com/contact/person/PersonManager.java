@@ -1,18 +1,11 @@
 package com.contact.person;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import com.contact.data.Person;
-import com.contact.event.EventBus;
 import com.contact.event.FriendAddedEvent;
 import com.contact.event.PersonCreatedEvent;
 import com.contact.manager.Manager;
-import com.contact.manager.data.DataModel;
-import com.contact.manager.data.ITables;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 public class PersonManager extends Manager {
 	
@@ -44,10 +37,12 @@ public class PersonManager extends Manager {
 	
 	public List<Person> read(int userId)
 	{
-		String json = dataModel.read(ITables.PERSON_TABLE, userId);
-		Gson gson = new Gson();
-		List<Person> persons = gson.fromJson(json, new TypeToken<ArrayList<Person>>(){}.getType());
-		return persons;
+		return dataModel.read(Person.class, userId);
+	}
+	
+	public Person read(int userId, int personId)
+	{
+		return dataModel.read(Person.class, userId, personId);
 	}
 	
 	public boolean update(Person person)
