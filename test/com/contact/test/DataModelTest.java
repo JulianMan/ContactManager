@@ -6,9 +6,9 @@ import java.util.List;
 
 import org.junit.Assert;
 
-import com.contact.data.Person;
-import com.contact.manager.data.DataModel;
-import com.contact.manager.data.ITables;
+import com.contact.datalayer.DataModel;
+import com.contact.datalayer.ITables;
+import com.contact.person.Person;
 
 public class DataModelTest {
 	

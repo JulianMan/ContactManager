@@ -1,6 +1,6 @@
 package com.contact.event;
 
-import com.contact.data.Person;
+import com.contact.person.Person;
 
 public class PersonCreatedEvent extends Event {
 	

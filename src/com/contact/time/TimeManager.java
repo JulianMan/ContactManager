@@ -3,10 +3,9 @@ package com.contact.time;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.contact.data.CalendarEntry;
+import com.contact.datalayer.DataModel;
+import com.contact.datalayer.ITables;
 import com.contact.manager.Manager;
-import com.contact.manager.data.DataModel;
-import com.contact.manager.data.ITables;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -35,10 +34,7 @@ public class TimeManager extends Manager {
 	
 	public List<CalendarEntry> readCalendarEntry(int userId)
 	{
-		String json = dataModel.read(ITables.CALENDAR_ENTRY_TABLE, userId);
-		Gson gson = new Gson();
-		List<CalendarEntry> calendarEntries = gson.fromJson(json, new TypeToken<ArrayList<CalendarEntry>>(){}.getType());
-		return calendarEntries;
+		return dataModel.read(CalendarEntry.class, userId);
 	}
 	
 	public boolean updateCalendarEntry(CalendarEntry ce)
