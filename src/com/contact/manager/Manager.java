@@ -2,8 +2,8 @@ package com.contact.manager;
 
 import java.util.logging.Logger;
 
+import com.contact.datalayer.DataModel;
 import com.contact.event.EventBus;
-import com.contact.manager.data.DataModel;
 
 public class Manager {
 	protected DataModel dataModel = DataModel.getInstance();

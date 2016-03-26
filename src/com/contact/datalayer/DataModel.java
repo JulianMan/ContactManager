@@ -1,11 +1,11 @@
-package com.contact.manager.data;
+package com.contact.datalayer;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.List;
 
-import com.contact.data.CalendarEntry;
-import com.contact.data.Person;
+import com.contact.person.Person;
+import com.contact.time.CalendarEntry;
 
 public class DataModel {
 	private static DataModel instance = null;

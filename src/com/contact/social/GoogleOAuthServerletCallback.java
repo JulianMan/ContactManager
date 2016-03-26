@@ -9,9 +9,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.contact.data.Attribute;
 import com.contact.event.EventBus;
 import com.contact.event.FriendAddedEvent;
+import com.contact.person.Attribute;
 import com.contact.utils.RequestHandler;
 import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
 import com.google.api.client.auth.oauth2.AuthorizationCodeResponseUrl;
@@ -56,7 +56,7 @@ public class GoogleOAuthServerletCallback extends AbstractAuthorizationCodeCallb
         List<Person> googlePeople = listConnectionsResponse.getConnections();
         if (googlePeople != null && googlePeople.size() > 0) {
             for (Person googlePerson : googlePeople) {
-            	com.contact.data.Person contactManagerPerson = new com.contact.data.Person();
+            	com.contact.person.Person contactManagerPerson = new com.contact.person.Person();
             	
             	List<Name> names = googlePerson.getNames();
                 if (names != null && names.size() > 0) {

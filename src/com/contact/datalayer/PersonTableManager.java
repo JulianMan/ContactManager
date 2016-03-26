@@ -1,4 +1,4 @@
-package com.contact.manager.data;
+package com.contact.datalayer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.contact.data.Attribute;
-import com.contact.data.Person;
+import com.contact.person.Attribute;
+import com.contact.person.Person;
 import com.mysql.jdbc.Statement;
 
 public class PersonTableManager extends TableManager<Person> {
