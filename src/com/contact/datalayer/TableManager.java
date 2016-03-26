@@ -1,4 +1,4 @@
-package com.contact.manager.data;
+package com.contact.datalayer;
 
 import java.sql.Connection;
 import java.util.List;

@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.contact.data.Person;
 import com.contact.utils.RequestHandler;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -74,7 +73,7 @@ public class PersonServlet extends HttpServlet {
 		Person person;
 		try {
 			String json = RequestHandler.extractJson(request);
-			person = gson.fromJson(json, Person.class);
+			person = Person.fromJson(json);
 		} catch (JsonSyntaxException e) {
 			response.sendError(400, "Error parsing supplied json.");
 			return;

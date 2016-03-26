@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import com.contact.data.Attribute;
-import com.contact.data.Person;
 import com.contact.event.EventListener;
 import com.contact.event.FriendAddedEvent;
 

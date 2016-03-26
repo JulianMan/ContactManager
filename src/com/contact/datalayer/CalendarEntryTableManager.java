@@ -1,4 +1,4 @@
-package com.contact.manager.data;
+package com.contact.datalayer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.contact.data.CalendarEntry;
+import com.contact.time.CalendarEntry;
 
 public class CalendarEntryTableManager extends TableManager<CalendarEntry>{
 	

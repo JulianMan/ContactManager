@@ -2,7 +2,6 @@ package com.contact.person;
 
 import java.util.List;
 
-import com.contact.data.Person;
 import com.contact.event.FriendAddedEvent;
 import com.contact.event.PersonCreatedEvent;
 import com.contact.manager.Manager;

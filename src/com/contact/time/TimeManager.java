@@ -3,10 +3,9 @@ package com.contact.time;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.contact.data.CalendarEntry;
+import com.contact.datalayer.DataModel;
+import com.contact.datalayer.ITables;
 import com.contact.manager.Manager;
-import com.contact.manager.data.DataModel;
-import com.contact.manager.data.ITables;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

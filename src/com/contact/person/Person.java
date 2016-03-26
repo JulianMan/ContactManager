@@ -1,4 +1,4 @@
-package com.contact.data;
+package com.contact.person;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +17,9 @@ public class Person {
 	
 	public Person()
 	{
-		
+		attributes.put("Interests", new Attribute("Interests", ""));
+		attributes.put("Gift Ideas", new Attribute("Gift Ideas", ""));
+		attributes.put("Birthday", new Attribute("Birthday", ""));
 	}
 
 	public String getName() {
@@ -69,11 +71,11 @@ public class Person {
 		return gson.toJson(this);
 	}
 	
-	public static List<Person> fromJson(String json)
+	public static Person fromJson(String json)
 	{
 		Gson gson = new Gson();
-		List<Person> persons = gson.fromJson(json, new TypeToken<ArrayList<Person>>(){}.getType());
-		return persons;
+		Person person = gson.fromJson(json, new TypeToken<Person>(){}.getType());
+		return person;
 	}
 	
 	public boolean equals(Object other)

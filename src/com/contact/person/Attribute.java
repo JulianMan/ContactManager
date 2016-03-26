@@ -1,4 +1,4 @@
-package com.contact.data;
+package com.contact.person;
 
 public class Attribute {
 	private String attributeName;
