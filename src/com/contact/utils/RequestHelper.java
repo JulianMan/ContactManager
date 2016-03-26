@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class RequestHandler {
+public class RequestHelper {
 	public static int getUserId(HttpServletRequest request) {
 		// TODO: Implement
 		return 1;

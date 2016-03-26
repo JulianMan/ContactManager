@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.contact.event.EventBus;
 import com.contact.event.FriendAddedEvent;
 import com.contact.person.Attribute;
-import com.contact.utils.RequestHandler;
+import com.contact.utils.RequestHelper;
 import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
 import com.google.api.client.auth.oauth2.AuthorizationCodeResponseUrl;
 import com.google.api.client.auth.oauth2.Credential;
@@ -63,7 +63,7 @@ public class GoogleOAuthServerletCallback extends AbstractAuthorizationCodeCallb
                 	String googleContactName = googlePerson.getNames().get(0).getDisplayName();
                 	logger.info("Found google contact: " + googleContactName);
                 	contactManagerPerson.setName(googleContactName);
-                	contactManagerPerson.setUserId(RequestHandler.getUserId(req));
+                	contactManagerPerson.setUserId(RequestHelper.getUserId(req));
                 	
                 	List<Photo> photos = googlePerson.getPhotos();
                 	if(photos != null) {

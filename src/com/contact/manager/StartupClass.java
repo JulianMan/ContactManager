@@ -1,5 +1,7 @@
 package com.contact.manager;
 
+import java.util.logging.Logger;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
@@ -34,6 +36,8 @@ public class StartupClass implements ServletContextListener {
      */
     public void contextInitialized(ServletContextEvent arg0)  {
     	// Initialize everything so event listeners will be registered
+    	Logger logger = Logger.getGlobal();
+    	logger.info("Initializing singletons to register events");
     	EventBus.getInstance();
         DataModel.getInstance();
         PersonManager.getInstance();

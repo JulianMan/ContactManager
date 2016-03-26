@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.contact.utils.RequestHandler;
+import com.contact.utils.RequestHelper;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -35,7 +35,7 @@ public class PersonServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int userId = RequestHandler.getUserId(request);
+		int userId = RequestHelper.getUserId(request);
 		
 		String requestedPerson = request.getPathInfo().split("/")[1];
 		
@@ -58,7 +58,7 @@ public class PersonServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int userId = RequestHandler.getUserId(request);
+		int userId = RequestHelper.getUserId(request);
 		
 		String requestedPerson = request.getPathInfo().split("/")[1];
 		int personId;
@@ -72,7 +72,7 @@ public class PersonServlet extends HttpServlet {
 		
 		Person person;
 		try {
-			String json = RequestHandler.extractJson(request);
+			String json = RequestHelper.extractJson(request);
 			person = Person.fromJson(json);
 		} catch (JsonSyntaxException e) {
 			response.sendError(400, "Error parsing supplied json.");
