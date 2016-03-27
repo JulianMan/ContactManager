@@ -24,7 +24,7 @@ public abstract class BaseServlet<T> extends HttpServlet {
 		
 		String [] splitPath = request.getPathInfo().split("/");
 		
-		if(splitPath[1].equals("all") || splitPath.length == 0) {
+		if(splitPath.length == 0 || splitPath[1].equals("all")) {
 			List<T> objs = getManager().read(userId);
 			response.getWriter().append(gson.toJson(objs));
 		} else {

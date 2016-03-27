@@ -1,6 +1,8 @@
 package com.contact.time;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.contact.event.CalendarEntryTriggeredEvent;
 import com.contact.event.EventBus;
@@ -14,6 +16,7 @@ public class CalendarEntry implements Runnable {
 	private Long recurrence = null;
 	private boolean notified = false;
 	private String message = null;
+	private List<Integer> relatedPeople = new ArrayList<Integer>();
 	
 	public CalendarEntry()
 	{
@@ -134,6 +137,14 @@ public class CalendarEntry implements Runnable {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public List<Integer> getRelatedPeople() {
+		return relatedPeople;
+	}
+
+	public void setRelatedPeople(List<Integer> relatedPeople) {
+		this.relatedPeople = relatedPeople;
 	}
 
 }
