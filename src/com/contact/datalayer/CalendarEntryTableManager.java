@@ -13,15 +13,15 @@ import com.contact.time.CalendarEntry;
 public class CalendarEntryTableManager extends TableManager<CalendarEntry>{
 	
 	private static final String CREATE_QUERY = "insert into calendar_entry "
-			+ "(user_id,title,time,recurrence) values "
-			+ "(?,?,?,?)";	
+			+ "(user_id,title,time,recurrence,notified,message) values "
+			+ "(?,?,?,?,?,?)";	
 	private static final String READ_QUERY = "select entry_id,user_id,"
-			+ "title,time,recurrence "
+			+ "title,time,recurrence,notified,message "
 			+ "from calendar_entry where "
 			+ "user_id = ?";
 	private static final String READ_QUERY_EXTENSION = " and entry_id = ?";
 	private static final String UPDATE_QUERY = "update calendar_entry set "
-			+ "title = ?, time = ?, recurrence = ? where "
+			+ "title = ?, time = ?, recurrence = ?, notified = ?, message = ? where "
 			+ "user_id = ? and entry_id = ?";
 	private static final String DELETE_QUERY = "delete from calendar_entry where "
 			+ "user_id = ? and entry_id = ?";
@@ -40,13 +40,16 @@ public class CalendarEntryTableManager extends TableManager<CalendarEntry>{
 			pstmt.setString(idx++, t.getTitle());
 			pstmt.setTimestamp(idx++, Timestamp.valueOf(t.getTime()));
 			pstmt.setLong(idx++, t.getRecurrence());
-			return pstmt.execute();
+			pstmt.setBoolean(idx++, t.isNotified());
+			pstmt.setString(idx++, t.getMessage());
+			pstmt.execute();
+			return true;
 		}
 		catch(SQLException e)
 		{
 			e.printStackTrace();
+			return false;
 		}
-		return false;
 	}
 	
 	@Override
@@ -98,6 +101,8 @@ public class CalendarEntryTableManager extends TableManager<CalendarEntry>{
 		calendarEntry.setTitle(rs.getString("title"));
 		calendarEntry.setTime(rs.getTimestamp("time").toLocalDateTime());
 		calendarEntry.setRecurrence(rs.getLong("recurrence"));
+		calendarEntry.setNotified(rs.getBoolean("notified"));
+		calendarEntry.setMessage(rs.getString("message"));
 		return calendarEntry;
 	}
 
@@ -110,15 +115,18 @@ public class CalendarEntryTableManager extends TableManager<CalendarEntry>{
 			pstmt.setString(idx++,t.getTitle());
 			pstmt.setTimestamp(idx++, Timestamp.valueOf(t.getTime()));
 			pstmt.setLong(idx++, t.getRecurrence());
+			pstmt.setBoolean(idx++,	t.isNotified());
+			pstmt.setString(idx++, t.getMessage());
 			pstmt.setInt(idx++, t.getUserId());
 			pstmt.setInt(idx++, t.getEntryId());
-			return pstmt.execute();
+			pstmt.execute();
+			return true;
 		}
 		catch(SQLException e)
 		{
 			e.printStackTrace();
+			return false;
 		}
-		return false;
 	}
 
 	@Override
@@ -129,13 +137,14 @@ public class CalendarEntryTableManager extends TableManager<CalendarEntry>{
 			int idx = 1;
 			pstmt.setInt(idx++, t.getUserId());
 			pstmt.setInt(idx++, t.getEntryId());
-			return pstmt.execute();
+			pstmt.execute();
+			return true;
 		}
 		catch(SQLException e)
 		{
 			e.printStackTrace();
+			return false;
 		}
-		return false;
 	}
 
 }

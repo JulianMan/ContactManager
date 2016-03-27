@@ -30,7 +30,7 @@ import com.google.api.services.people.v1.model.Photo;
 
 @WebServlet("/GoogleOAuthServerletCallback")
 public class GoogleOAuthServerletCallback extends AbstractAuthorizationCodeCallbackServlet {
-	
+	private static final long serialVersionUID = 1L;
 	protected Logger logger = Logger.getGlobal();
 
 	@Override

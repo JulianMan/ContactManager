@@ -28,6 +28,7 @@ public class EventListenerMap {
 		List<EventListener<E>> listeners = new ArrayList<>();
 		for(EventListener<? extends Event> listener : listenersMap.get(c))
 		{
+			// TODO: I think this is broken. It will cast events to type E
 			listeners.add((EventListener<E>) listener);
 		}
 		return listeners;

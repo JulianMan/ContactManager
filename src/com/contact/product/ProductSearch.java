@@ -1,5 +1,12 @@
 package com.contact.product;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -9,14 +16,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.TimeZone;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StringReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
