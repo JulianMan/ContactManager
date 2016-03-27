@@ -1,4 +1,4 @@
-package com.contact.data;
+package com.contact.product;
 
 public class AmazonProduct {
 	

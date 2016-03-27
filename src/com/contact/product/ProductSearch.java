@@ -31,43 +31,39 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.contact.data.AmazonProduct;
-
 public class ProductSearch {
 	
 	protected static final String PROVIDER = "http://webservices.amazon.com/onca/xml?";
 	protected static final String SIGNING_HEADER = "GET\n" +
 												   "webservices.amazon.com\n" +
 												   "/onca/xml\n";
-	protected String accessKey = "";
-	protected String secretKey = "";
-	protected String associateTag = "";
+	
 	protected static final String HMAC_SHA256 = "HmacSHA256";
 	protected static final String UTF8 = "UTF-8";
 	
-	public static void main(String[] args)
+	protected String accessKey = "";
+	protected String secretKey = "";
+	protected String associateTag = "";
+	
+	public ProductSearch()
 	{
-		ProductSearch ps = new ProductSearch();
-		ps.start();
-		ps.test();
 	}
 	
-	public void test()
-	{
-		search("chess");		
-	}
-	
-	public void start()
+	public boolean start()
 	{
 		Properties prop = new Properties();
 		InputStream input = null;
 		try
 		{
-			input = new FileInputStream("resources/AWSCredentials.properties");
+			input = getClass().getClassLoader()
+					.getResourceAsStream("AWSCredentials.properties");
 			prop.load(input);
 			accessKey = prop.getProperty("AccessKey");
 			secretKey = prop.getProperty("SecretKey");
 			associateTag = prop.getProperty("AssociateTag");
+			return !"".equals(accessKey)
+				&& !"".equals(secretKey)
+				&& !"".equals(associateTag);
 		}
 		catch(IOException e)
 		{
@@ -83,27 +79,32 @@ public class ProductSearch {
 				}
 			}
 		}
+		return false;
 	}
 	
+	/**
+	 * Use Amazon ItemSearch API to search for products related to an interest
+	 * @param interest URL encoded string
+	 * @return
+	 */
 	public List<AmazonProduct> search(String interest)
 	{
-		List<String> searchParams = getSearchParameters(interest);
-		String query = PROVIDER + buildQuery(searchParams);
-		System.out.println(query);
-		System.out.println();
-		try
+		if(interest != null && !interest.isEmpty())
 		{
-			String xmlResult = executeHttpRequest(query);
-			System.out.println(xmlResult);
-			Document doc = parseXml(xmlResult);
-			NodeList items = doc.getElementsByTagName("Item");
-			List<AmazonProduct> products = extractAmazonProducts(items);
-			return products;
-//			System.out.println(xmlResult);
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
+			List<String> searchParams = getSearchParameters(interest);
+			String query = PROVIDER + buildQuery(searchParams);
+			try
+			{
+				String xmlResult = executeHttpRequest(query);
+				Document doc = parseXml(xmlResult);
+				NodeList items = doc.getElementsByTagName("Item");
+				List<AmazonProduct> products = extractAmazonProducts(items);
+				return products;
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
 		}
 		return new ArrayList<>();
 	}
@@ -115,7 +116,7 @@ public class ProductSearch {
 		searchParams.add("Operation=ItemSearch");
 		searchParams.add("AWSAccessKeyId=" + accessKey);
 		searchParams.add("AssociateTag=" + associateTag);
-		searchParams.add("Keywords=" + urlEncode(interest.replaceAll(" ", "+")));
+		searchParams.add("Keywords=" + urlEncode(interest.replaceAll("\\s+", "+")));// Replace whitespace with "+"
 		searchParams.add("Timestamp=" + urlEncode(getCurrentTime()));
 		searchParams.add("SearchIndex=All");
 		Collections.sort(searchParams);
@@ -154,8 +155,6 @@ public class ProductSearch {
 			response.append(inputLine);
 		}
 		in.close();
-
-		//print result
 		return response.toString();
 	}
 	
@@ -173,7 +172,7 @@ public class ProductSearch {
 				prod.setUrl(item.getElementsByTagName("DetailPageURL").item(0).getTextContent());
 				Element attributes = (Element) item.getElementsByTagName("ItemAttributes").item(0);
 				prod.setDescription(attributes.getElementsByTagName("Title").item(0).getTextContent());
-				System.out.println(prod.toString());
+				products.add(prod);
 			}
 		}
 		return products;
