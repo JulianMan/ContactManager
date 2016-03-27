@@ -3,6 +3,7 @@ package com.contact.datalayer;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.List;
+import java.util.logging.Logger;
 
 import com.contact.person.Person;
 import com.contact.time.CalendarEntry;
@@ -10,6 +11,7 @@ import com.contact.time.CalendarEntry;
 public class DataModel {
 	private static DataModel instance = null;
 	private Connection connection;
+	private Logger logger = Logger.getGlobal();
 	
 	private PersonTableManager personTableManager;
 	private CalendarEntryTableManager calendarEntryTableManager;
@@ -123,7 +125,7 @@ public class DataModel {
 	
 	private void badObjectType(Object o, String operation)
 	{
-		System.out.println("Bad object type " + o.getClass().getName()
+		logger.severe("Bad object type " + o.getClass().getName()
 				+ " for operation \"" + operation + "\"");
 	}
 }

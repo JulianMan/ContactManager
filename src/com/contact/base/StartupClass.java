@@ -1,4 +1,4 @@
-package com.contact.manager;
+package com.contact.base;
 
 import java.util.logging.Logger;
 
