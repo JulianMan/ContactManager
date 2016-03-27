@@ -6,10 +6,10 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.contact.product.AmazonProduct;
-import com.contact.product.ProductSearch;
+import com.contact.product.AmazonProductSearch;
 
 public class ProductSearchTest {
-	ProductSearch productSearch = new ProductSearch();
+	AmazonProductSearch productSearch = new AmazonProductSearch();
 	List<AmazonProduct> products;
 	
 	public ProductSearchTest()
