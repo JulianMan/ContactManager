@@ -187,13 +187,13 @@ public class CalendarEntryTableManager extends TableManager<CalendarEntry>{
 	public boolean delete(CalendarEntry t) {
 		try
 		{
+			deleteRelatedPeople(t.getEntryId());
+			
 			PreparedStatement pstmt = connection.prepareStatement(DELETE_QUERY);
 			int idx = 1;
 			pstmt.setInt(idx++, t.getUserId());
 			pstmt.setInt(idx++, t.getEntryId());
 			pstmt.execute();
-			
-			deleteRelatedPeople(t.getEntryId());
 			
 			return true;
 		}
