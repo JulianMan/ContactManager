@@ -49,6 +49,18 @@ public class AmazonProductSearch  implements ProductSearch<AmazonProduct>{
 	{
 	}
 	
+	// Must call start method, either by providing properties or by using default properties
+	public boolean start(Properties credentials)
+	{
+		accessKey = credentials.getProperty("AccessKey");
+		secretKey = credentials.getProperty("SecretKey");
+		associateTag = credentials.getProperty("AssociateTag");
+		
+		return accessKey != null && !"".equals(accessKey)
+			&& secretKey != null && !"".equals(secretKey)
+			&& associateTag != null && !"".equals(associateTag);
+	}
+	
 	public boolean start()
 	{
 		Properties prop = new Properties();
@@ -56,14 +68,9 @@ public class AmazonProductSearch  implements ProductSearch<AmazonProduct>{
 		try
 		{
 			input = getClass().getClassLoader()
-					.getResourceAsStream("AWSCredentials.properties");
+					.getResourceAsStream("resources/AWSCredentials.properties");
 			prop.load(input);
-			accessKey = prop.getProperty("AccessKey");
-			secretKey = prop.getProperty("SecretKey");
-			associateTag = prop.getProperty("AssociateTag");
-			return !"".equals(accessKey)
-				&& !"".equals(secretKey)
-				&& !"".equals(associateTag);
+			return start(prop);
 		}
 		catch(IOException e)
 		{
