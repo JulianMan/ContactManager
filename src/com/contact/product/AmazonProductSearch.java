@@ -120,6 +120,7 @@ public class AmazonProductSearch  implements ProductSearch<AmazonProduct>{
 		searchParams.add("Keywords=" + urlEncode(interest.replaceAll("\\s+", "+")));// Replace whitespace with "+"
 		searchParams.add("Timestamp=" + urlEncode(getCurrentTime()));
 		searchParams.add("SearchIndex=All");
+		searchParams.add("ResponseGroup=" + urlEncode("Small,Images"));
 		Collections.sort(searchParams);
 		return searchParams;
 	}
@@ -140,25 +141,6 @@ public class AmazonProductSearch  implements ProductSearch<AmazonProduct>{
 		return null;
 	}
 	
-//	protected String executeHttpRequest(String request) throws Exception
-//	{
-//		URL url = new URL(request);
-//		HttpURLConnection con = (HttpURLConnection) url.openConnection();
-//		con.setRequestMethod("GET");
-//		int responseCode = con.getResponseCode();
-//		
-//		BufferedReader in = new BufferedReader(
-//		        new InputStreamReader(con.getInputStream()));
-//		String inputLine;
-//		StringBuffer response = new StringBuffer();
-//
-//		while ((inputLine = in.readLine()) != null) {
-//			response.append(inputLine);
-//		}
-//		in.close();
-//		return response.toString();
-//	}
-	
 	protected List<AmazonProduct> extractAmazonProducts(NodeList items)
 	{
 		List<AmazonProduct> products = new ArrayList<>();
@@ -173,6 +155,8 @@ public class AmazonProductSearch  implements ProductSearch<AmazonProduct>{
 				prod.setUrl(item.getElementsByTagName("DetailPageURL").item(0).getTextContent());
 				Element attributes = (Element) item.getElementsByTagName("ItemAttributes").item(0);
 				prod.setName(attributes.getElementsByTagName("Title").item(0).getTextContent());
+				Element medImage = (Element) item.getElementsByTagName("MediumImage").item(0);
+				prod.setImageUrl(medImage.getElementsByTagName("URL").item(0).getTextContent());
 				products.add(prod);
 			}
 		}

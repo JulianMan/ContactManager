@@ -1,4 +1,49 @@
+
 <div class="container-fluid">
+    
+  
+  <div class="modalDialog" ng-show="addAttributeForm">
+    <div> 
+      <a href="" title="Close" class="close" ng-click="addAttributeForm=false;">X</a>
+    
+      <h2>Add an Attribute</h2>
+    
+      <form>
+        <div class="form-group">
+          <label for="heading">Heading:</label>
+          <input type="text" class="form-control" id="heading" ng-model="heading">
+        </div>
+        <div class="form-group">
+          <label for="content">Content:</label>
+          <textarea type="text" class="form-control" id="content" ng-model="content"></textarea>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-default" ng-click="addAttribute(heading, content); addAttributeForm=false;">Submit</button>
+          <button class="btn btn-default" ng-click="addAttributeForm=false;">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <div class="modalDialog" ng-show="addLoanForm">
+    <div> 
+      <a href="" title="Close" class="close" ng-click="addAttributeForm=false;">X</a>
+    
+      <h2>Add a Loan Reminder</h2>
+    
+      <form>
+        <div class="form-group">
+          <label for="content">What did you lend?</label>
+          <textarea type="text" class="form-control" id="content" ng-model="content"></textarea>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-default" ng-click="addLoanAttribute(content); addLoanForm=false;">Submit</button>
+          <button class="btn btn-default" ng-click="addLoanForm=false;">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+    
   <div class="row">
     <div class="col-md-4">
       <!--Sidebar content-->
@@ -10,9 +55,9 @@
         <!-- List group -->
         <ul class="list-group">
           <li class="list-group-item">Quick Reminder</li>
-          <li class="list-group-item">I Lent Something</li>
-          <li class="list-group-item">Add Attribute</li>
-          <li class="list-group-item">Delete Contact</li>
+          <li class="list-group-item">Get Gifts</li>
+          <li class="list-group-item"><a href="" ng-click="addLoanForm=true">Add Loan Reminder</a></li>
+          <li class="list-group-item"><a href="" ng-click="addAttributeForm=true">Add Attribute</a></li>
         </ul>
       </div>
     </div>
@@ -24,45 +69,43 @@
         <div class="panel-body">
           <div class="row">
             <div class="col-sm-3 panel-thumb">
-              <img class="large-thumb" ng-src="{{person.attributes._photo === undefined && 'img/default-thumb.png' || person.attributes._photo.attributeValue}}">
+              <img class="large-thumb" ng-src="{{photo === undefined && 'img/default-thumb.png' || photo.attributeValue}}">
             </div>
             
             <div class="col-sm-9">
               <div ng-show="editButton">
                 <p><strong>Name: </strong> {{person.name}}</p>
-                <p><strong>Phone: </strong>{{person.attributes.Phone.attributeValue}}</p>
-                <p><strong>Email: </strong>{{person.attributes.Email.attributeValue}}</p>
+                <p><strong>Phone: </strong>{{phone.attributeValue}}</p>
+                <p><strong>Email: </strong>{{email.attributeValue}}</p>
               </div>
               
               <form class="form-horizontal" ng-show="editContact">
                 <div class="form-group">
                   <label for="inputEmail3" class="col-sm-2 control-label">Name: </label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" id="name" value="{{person.name}}">
+                    <input type="text" class="form-control" id="name" value="{{person.name}}" ng-model="person.name">
                   </div>
                 </div>
                  <div class="form-group">
                   <label for="inputPassword3" class="col-sm-2 control-label">Phone: </label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" id="phone" value="{{person.attributes.Phone.attributeValue}}">
+                    <input type="text" class="form-control" id="phone" value="{{phone.attributeValue}}" ng-model="phone.attributeValue">
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="inputPassword3" class="col-sm-2 control-label">Email: </label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" id="email" value="{{person.attributes.Email.attributeValue}}">
+                    <input type="text" class="form-control" id="email" value="{{email.attributeValue}}" ng-model="email.attributeValue">
                   </div>
                 </div>
                 <div class="form-group">
                   <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="btn btn-default">Save</button>
+                    <button type="submit" class="btn btn-default" ng-click="postData(); editContact=false; editButton=true;">Save</button>
                     <button class="btn btn-default" ng-click="editContact=false; editButton=true;">Close</button>
                   </div>
                 </div>
                 
               </form>
-              
-              
               <button class="btn btn-default" ng-show="editButton" ng-click="editContact=true; editButton=false;">Edit Contact</button>
               
             </div>
@@ -79,8 +122,27 @@
           <div class="panel panel-default" ng-repeat="attribute in person.attributes" ng-if ="$index < leftLimit">
             <div class="panel-heading">{{attribute.attributeName}}</div>
             <div class="panel-body">
-              <p>{{attribute.attributeValue}}</p>
-              <p>{{attribute.attributeName.match("_")}}</p>
+              <div class="angular-with-newlines" ng-hide="edit">
+                  <p>{{attribute.attributeValue}}</p>
+              </div>
+             
+               <form ng-show="edit">
+                  <div class="form-group">
+                    <label for="heading">Heading:</label>
+                    <input type="text" class="form-control" id="heading" value="{{attribute.attributeName}}" ng-model="attribute.attributeName">
+                  </div>
+                  <div class="form-group">
+                    <label for="content">Content:</label>
+                    <textarea type="text" class="form-control" id="content" value="{{attribute.attributeValue}}" ng-model="attribute.attributeValue"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-default" ng-click="postData(); edit=false;">Submit</button>
+                    <button type="submit" class="btn btn-default" ng-click="edit=false;">Close</button>
+                  </div>
+                </form>
+                
+    
+              <button class="btn btn-default" ng-hide="edit" ng-click="edit=true;">Edit</button>
             </div>
           </div>
         </div>
@@ -88,12 +150,42 @@
           <div class="panel panel-default" ng-repeat="attribute in person.attributes" ng-if ="$index >= leftLimit">
             <div class="panel-heading">{{attribute.attributeName}}</div>
             <div class="panel-body">
-              <p>{{attribute.attributeValue}}</p>
+              <div class="angular-with-newlines" ng-hide="edit">
+                <p>{{attribute.attributeValue}}</p>
+              </div>
+             
+               <form ng-show="edit">
+                  <div class="form-group">
+                    <label for="heading">Heading:</label>
+                    <input type="text" class="form-control" id="heading" value="{{attribute.attributeName}}" ng-model="attribute.attributeName">
+                  </div>
+                  <div class="form-group">
+                    <label for="content">Content:</label>
+                    <textarea type="text" class="form-control" id="content" value="{{attribute.attributeValue}}" ng-model="attribute.attributeValue"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-default" ng-click="postData(); edit=false;">Submit</button>
+                    <button type="submit" class="btn btn-default" ng-click="edit=false;">Close</button>
+                  </div>
+                </form>
+                
+    
+              <button class="btn btn-default" ng-hide="edit" ng-click="edit=true;">Edit</button>
             </div>
           </div>
         </div>
         
-        
+        <div class="col-md-6">
+	        <div class="panel panel-default" ng-repeat="giftidea in giftideas">
+	          <div class="panel-heading">Gift Idea</div>
+		        <div class="panel-body">
+		          <a class="product-text" href={{giftidea.url}}>
+		          	<img class="product-image" src={{giftidea.imageUrl}}><br>
+		          	{{giftidea.name}}
+		          </a>
+	          </div>
+			</div>
+		</div>
         
       </div>
     
