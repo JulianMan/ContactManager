@@ -101,7 +101,7 @@ contactManagerControllers.controller('ContactDetailCtrl', function ($scope, $rou
 					"nano":0
 				}
 			},
-			"recurrence":60,
+			"recurrence":-1,
 			"notified":false,
 			"message":content,
 			"relatedPeople":[parseInt(id)]
@@ -114,11 +114,11 @@ contactManagerControllers.controller('ContactDetailCtrl', function ($scope, $rou
 		  data: notif
 		}
 		
-		console.log(req.data);
-		
 		$http(req).then(
 			function(){
 				console.log ("success");
+				// Add reminder temporarily to notifications object so it shows up in UI
+				$scope.notifications[title] = req.data;
 			}, 
 			function(){
 				console.log ("error");
@@ -186,8 +186,55 @@ contactManagerControllers.controller('ContactDetailCtrl', function ($scope, $rou
 			function(){
 				console.log ("error");
 			}
-		);
-		
+		);	
 	}
 	
+});
+
+contactManagerControllers.controller('ReminderCtrl', function ($scope, $http) {
+	$http.get('TimeServlet/all').success(function(data){
+		$scope.notifications = data;
+	});
+
+	// Function called with any "Submit" button press, used to POST entire reminder to server
+	$scope.postData = function (reminder) {
+		
+		// Updated reminder, set notified flag to false
+		reminder.notified = false;
+		reminder.recurrence = reminder.recurrence * 60;
+		
+		// Do POST with proper email, phone, photo format in JSON file
+		var req = {
+		  method: 'POST',
+		  url: 'TimeServlet/' + reminder.entryId,
+		  data: reminder
+		}
+		
+		$http(req).then(
+			function(){
+				console.log ("success");
+			}, 
+			function(){
+				console.log ("error");
+			}
+		);
+	}
+	
+	// Function to get names of people associated with a reminder
+	$scope.getName = function(relatedPeople) {
+		var length = relatedPeople.length;
+		var names = "";
+		
+		if (length > 0) {
+			names = "<a href='/contact/" + relatedPeople[0] + "'>Associated contact</a>";
+			console.log(relatedPeople[0]);
+			for (var i=0; i<length; i++) {
+				//$http.get('PersonServlet/' + relatedPeople[i]).success(function(data){
+					//names = names + " " + data.name;
+				//});
+			}	
+		}
+		
+		return names;
+	}
 });
