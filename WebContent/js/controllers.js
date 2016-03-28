@@ -21,6 +21,7 @@ contactManagerControllers.controller('ContactDetailCtrl', function ($scope, $rou
 	// Set Person ID to Id from request handler - used in GET & POST requests
 	$scope.personId = id;
 	
+	// Get person object
 	$http.get('PersonServlet/' + id).success(function(data){
 		$scope.person = data;
 		
@@ -50,6 +51,81 @@ contactManagerControllers.controller('ContactDetailCtrl', function ($scope, $rou
 
 	});
 	
+	// Get notifications/events by person
+	$http.get('TimeServlet/all/person/' + id).success(function(data){
+		$scope.notifications = data;
+		
+		//$scope.date = data.time.date.month + "/" + data.time.date.day + "/" + data.time.date.year;
+		console.log(data);
+		
+	});
+	
+	// Function to return formatted time
+	$scope.getTime = function (hour, minutes) {
+		if (minutes<10) {
+			minutes = "0" + minutes;
+		}
+		return hour + ":" + minutes;
+	}
+	
+	// Function to open "Add a Loan" modal with populated headings
+	$scope.eventFormLoan = function() {
+		$scope.eventTitle = "Add a New Loan";
+		$scope.eventDescription = "What did you loan?";
+		$scope.addEventForm = true;
+	}
+	
+	// Function to open "Add a Reminder" modal with populated headings
+	$scope.eventFormReminder = function() {
+		$scope.eventTitle = "Add a New Reminder";
+		$scope.eventDescription = "What did you want to be reminded?";
+		$scope.addEventForm = true;
+	}
+	
+	// Function to add a new notification tied to a specific person
+	$scope.addNotification = function (title, content, month, day, year, hour, minute) {
+		var notif = {
+			"entryId":-1,
+			"userId":1,
+			"title":title,
+			"time":{
+				"date":{
+					"year":parseInt(year),
+					"month":parseInt(month),
+					"day":parseInt(day)
+				},
+				"time":{
+					"hour":parseInt(hour),
+					"minute":parseInt(minute),
+					"second":0,
+					"nano":0
+				}
+			},
+			"recurrence":60,
+			"notified":false,
+			"message":content,
+			"relatedPeople":[parseInt(id)]
+		}
+		
+		// Do POST with new notification
+		var req = {
+		  method: 'POST',
+		  url: 'TimeServlet/',
+		  data: notif
+		}
+		
+		console.log(req.data);
+		
+		$http(req).then(
+			function(){
+				console.log ("success");
+			}, 
+			function(){
+				console.log ("error");
+			}
+		);
+	}
+	
 	// Function to add a new attribute to a specific contact
 	$scope.addAttribute = function (heading, content) {
 		var text = {  
@@ -77,6 +153,8 @@ contactManagerControllers.controller('ContactDetailCtrl', function ($scope, $rou
 	$scope.addLoanAttribute = function (content) {
 		$scope.addAttribute("Load Reminder", content);
 	}
+	
+	
 	
 	// Function called with any "Submit" button press, used to POST entire contact to server
 	$scope.postData = function () {

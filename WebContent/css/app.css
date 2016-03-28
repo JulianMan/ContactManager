@@ -25,6 +25,11 @@ body {
   text-align: left;
 }
 
+.notification-alarm {
+  width:100%;
+  max-width:20px;
+  margin-right:10px;
+}
 .contact-name {
   height:70px;
   display:table;
@@ -77,6 +82,11 @@ body {
 
 .panel-blue .panel-heading {
   background-color: #218CC2;
+  color: #fff;
+}
+
+.panel-light-blue .panel-heading {
+  background-color: #60a4bd;
   color: #fff;
 }
 

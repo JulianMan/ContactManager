@@ -25,20 +25,53 @@
     </div>
   </div>
   
-  <div class="modalDialog" ng-show="addLoanForm">
+  <div class="modalDialog" ng-show="addEventForm">
     <div> 
-      <a href="" title="Close" class="close" ng-click="addAttributeForm=false;">X</a>
+      <a href="" title="Close" class="close" ng-click="addEventForm=false;">X</a>
     
-      <h2>Add a Loan Reminder</h2>
+      <h2>{{eventTitle}}</h2>
     
       <form>
         <div class="form-group">
-          <label for="content">What did you lend?</label>
+          <label for="content">Notification Title</label>
+          <input type="text" class="form-control" id="content" ng-model="title">
+        </div>
+        
+        <div class="form-group">
+          <label for="content">{{eventDescription}}</label>
           <textarea type="text" class="form-control" id="content" ng-model="content"></textarea>
         </div>
+        
         <div class="form-group">
-          <button type="submit" class="btn btn-default" ng-click="addLoanAttribute(content); addLoanForm=false;">Submit</button>
-          <button class="btn btn-default" ng-click="addLoanForm=false;">Close</button>
+          <label for="content">When do you want to be reminded?</label>
+          <div class="row">
+            <div class="col-sm-4">Month: 
+              <input type="text" class="form-control" id="content" ng-model="month">
+            </div>
+            <div class="col-sm-4">Day: 
+              <input type="text" class="form-control" id="content" ng-model="day">
+            </div>
+            <div class="col-sm-4">Year: 
+              <input type="text" class="form-control" id="content" ng-model="year">
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="content">What time?</label>
+          <div class="row">
+            <div class="col-sm-4">Hour: 
+              <input type="text" class="form-control" id="content" ng-model="hour">
+            </div>
+            <div class="col-sm-4">Minute: 
+              <input type="text" class="form-control" id="content" ng-model="minute">
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <button type="submit" class="btn btn-default" ng-click="addNotification(title, content, month, day, year, hour, minute); addEventForm=false;">Submit</button>
+          <button class="btn btn-default" ng-click="addEventForm=false;">Close</button>
         </div>
       </form>
     </div>
@@ -54,11 +87,32 @@
       
         <!-- List group -->
         <ul class="list-group">
-          <li class="list-group-item">Quick Reminder</li>
-          <li class="list-group-item"><a href="" ng-click="addLoanForm=true">Add Loan Reminder</a></li>
+          <li class="list-group-item"><a href="" ng-click="eventFormReminder();">Quick Reminder about {{person.name}}</a></li>
+          <li class="list-group-item"><a href="" ng-click="eventFormLoan();">Add Loan Reminder</a></li>
           <li class="list-group-item"><a href="" ng-click="addAttributeForm=true">Add Attribute</a></li>
         </ul>
       </div>
+      
+  
+      <div class="panel panel-default panel-light-blue" ng-repeat="notification in notifications">
+        <div class="panel-heading"><strong>Reminder: </strong>{{notification.title}}</div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-md-2">
+              <img class="notification-alarm" src="img/alarm.png">
+            </div>
+            <div class="col-md-4">
+              <p><strong>Date: </strong>{{notification.time.date.month + "/" + notification.time.date.day + "/" + notification.time.date.year}}</p>
+              <p><strong>Time: </strong>{{getTime(notification.time.time.hour, notification.time.time.minute)}}</p>
+            </div>
+            <div class="col-md-4">
+              <p>{{notification.message}}</p>
+            </div>
+              
+          </div>
+        </div>
+      </div>
+      
     </div>
 
     <div class="col-md-8">
