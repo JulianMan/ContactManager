@@ -50,6 +50,16 @@ public class PersonTableManager extends TableManager<Person> {
 	public boolean create(Person t) {
 		try
 		{
+			if(!t.getAttributes().containsKey("Gift Ideas")) {
+				t.setAttribute(new Attribute("Gift Ideas", ""));
+			}
+			if(!t.getAttributes().containsKey("Interests")) {
+				t.setAttribute(new Attribute("Interests", ""));
+			}
+			if(!t.getAttributes().containsKey("Birthday")) {
+				t.setAttribute(new Attribute("Birthday", ""));
+			}
+			
 			PreparedStatement person_statement = connection.prepareStatement(INSERT_PERSON_QUERY, Statement.RETURN_GENERATED_KEYS);
 			int idx = 1;
 			person_statement.setInt(idx++, t.getUserId());

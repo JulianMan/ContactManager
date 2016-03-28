@@ -15,9 +15,6 @@ public class Person {
 	
 	public Person()
 	{
-		attributes.put("Interests", new Attribute("Interests", ""));
-		attributes.put("Gift Ideas", new Attribute("Gift Ideas", ""));
-		attributes.put("Birthday", new Attribute("Birthday", ""));
 	}
 
 	public String getName() {
