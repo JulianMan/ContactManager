@@ -50,6 +50,7 @@ public class PersonTableManager extends TableManager<Person> {
 	public boolean create(Person t) {
 		try
 		{
+			// Populate default values whenever a person is added
 			if(!t.getAttributes().containsKey("Gift Ideas")) {
 				t.setAttribute(new Attribute("Gift Ideas", ""));
 			}
@@ -58,6 +59,12 @@ public class PersonTableManager extends TableManager<Person> {
 			}
 			if(!t.getAttributes().containsKey("Birthday")) {
 				t.setAttribute(new Attribute("Birthday", ""));
+			}
+			if(!t.getAttributes().containsKey("Phone")) {
+				t.setAttribute(new Attribute("Phone", ""));
+			}
+			if(!t.getAttributes().containsKey("Email")) {
+				t.setAttribute(new Attribute("Email", ""));
 			}
 			
 			PreparedStatement person_statement = connection.prepareStatement(INSERT_PERSON_QUERY, Statement.RETURN_GENERATED_KEYS);
