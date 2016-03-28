@@ -29,6 +29,10 @@ public class EventBus {
 	
 	public <T extends Event> void addListener(Class<T> eventType, EventListener<T> listener)
 	{
+		if(listener == null || eventType == null)
+		{
+			throw new IllegalArgumentException("Arguments must not be null");
+		}
 		listeners.put(eventType, listener);
 	}
 	
@@ -44,12 +48,12 @@ public class EventBus {
 		for(EventListener<T> listener : topicListeners)
 		{
 			pool.execute(new Runnable()
+				{
+					public void run()
 					{
-						public void run()
-						{
-							listener.handle(event);
-						}
-					});
+						listener.handle(event);
+					}
+				});
 		}
 	}
 }

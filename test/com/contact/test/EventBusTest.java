@@ -9,13 +9,13 @@ import com.contact.event.TestEvent;
 
 public class EventBusTest {
 	
-	boolean received = false;
 	long timeout = 500;
 	
 	@Test
 	public void testReceiveEvent()
 	{
-		EventBus.getInstance().addListener(TestEvent.class, new TestEventListener());
+		TestEventListener listener = new TestEventListener();
+		EventBus.getInstance().addListener(TestEvent.class, listener);
 		EventBus.getInstance().broadcastEvent(TestEvent.class, new TestEvent());
 		
 		long start = System.currentTimeMillis();
@@ -23,7 +23,8 @@ public class EventBusTest {
 		{
 		}
 		
-		Assert.assertTrue(received);
+		EventBus.getInstance().removeListener(TestEvent.class, listener);
+		Assert.assertTrue(listener.receivedEvent());
 	}
 	
 	@Test
@@ -43,11 +44,67 @@ public class EventBusTest {
 		Assert.assertFalse(success);
 	}
 	
-	public class TestEventListener implements EventListener<TestEvent>
+	@Test
+	public void testMultipleListeners()
 	{
+		TestEventListener listener1 = new TestEventListener();
+		TestEventListener listener2 = new TestEventListener();
+		EventBus.getInstance().addListener(TestEvent.class,listener1);
+		EventBus.getInstance().addListener(TestEvent.class,listener2);
+		
+		EventBus.getInstance().broadcastEvent(TestEvent.class, new TestEvent());
+		
+		pause(timeout);
+		
+		EventBus.getInstance().removeListener(TestEvent.class, listener1);
+		EventBus.getInstance().removeListener(TestEvent.class, listener2);
+		Assert.assertTrue(listener1.receivedEvent() && listener2.receivedEvent());
+	}
+	
+	// One listener throwing an exception should not stop another listener from receiving event
+	@Test
+	public void testListenerThrowingException()
+	{
+		EventListener<TestEvent> listener1 = new EventListener<TestEvent>(){
+			// Throw a null pointer exception
+			@SuppressWarnings("null")
+			@Override
+			public void handle(TestEvent event) {
+				Object unsafe = null;
+				System.out.println(unsafe.toString());
+			}
+		};		
+		TestEventListener listener2 = new TestEventListener();
+		
+		EventBus.getInstance().addListener(TestEvent.class,listener1);
+		EventBus.getInstance().addListener(TestEvent.class,listener2);
+		
+		EventBus.getInstance().broadcastEvent(TestEvent.class, new TestEvent());
+		
+		pause(timeout);
+		
+		Assert.assertTrue(listener2.receivedEvent());
+	}
+	
+	public static class TestEventListener implements EventListener<TestEvent>
+	{
+		private boolean received = false;
 		public void handle(TestEvent testEvent)
 		{
 			received = true;
+		}
+		
+		public boolean receivedEvent()
+		{
+			return received;
+		}
+	}
+	
+	protected static void pause(long duration)
+	{
+		long start = System.currentTimeMillis();
+		while(System.currentTimeMillis() - start < duration)
+		{
 		}
 	}
 }
