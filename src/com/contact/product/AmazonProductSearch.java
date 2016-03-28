@@ -9,14 +9,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.TimeZone;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.StringReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -49,6 +44,19 @@ public class AmazonProductSearch  implements ProductSearch<AmazonProduct>{
 	{
 	}
 	
+	// Must call start method, either by providing properties or by using default properties
+	public boolean start(Properties credentials)
+	{
+		accessKey = credentials.getProperty("AccessKey");
+		secretKey = credentials.getProperty("SecretKey");
+		associateTag = credentials.getProperty("AssociateTag");
+		
+		return accessKey != null && !"".equals(accessKey)
+			&& secretKey != null && !"".equals(secretKey)
+			&& associateTag != null && !"".equals(associateTag);
+	}
+	
+	
 	public boolean start()
 	{
 		Properties prop = new Properties();
@@ -56,14 +64,9 @@ public class AmazonProductSearch  implements ProductSearch<AmazonProduct>{
 		try
 		{
 			input = getClass().getClassLoader()
-					.getResourceAsStream("AWSCredentials.properties");
+					.getResourceAsStream("resources/AWSCredentials.properties");
 			prop.load(input);
-			accessKey = prop.getProperty("AccessKey");
-			secretKey = prop.getProperty("SecretKey");
-			associateTag = prop.getProperty("AssociateTag");
-			return !"".equals(accessKey)
-				&& !"".equals(secretKey)
-				&& !"".equals(associateTag);
+			return start(prop);
 		}
 		catch(IOException e)
 		{
