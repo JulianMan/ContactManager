@@ -17,7 +17,7 @@ import com.google.gson.JsonSyntaxException;
  */
 public abstract class BaseServlet<T> extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private Gson gson = new Gson();
+	protected Gson gson = new Gson();
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int userId = RequestHelper.getUserId(request);
