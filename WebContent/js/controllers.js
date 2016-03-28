@@ -73,6 +73,11 @@ contactManagerControllers.controller('ContactDetailCtrl', function ($scope, $rou
 		$scope.postData();
 	}
 	
+	// Function to add new load reminder to a specific contact
+	$scope.addLoanAttribute = function (content) {
+		$scope.addAttribute("Load Reminder", content);
+	}
+	
 	// Function called with any "Submit" button press, used to POST entire contact to server
 	$scope.postData = function () {
 		
