@@ -31,7 +31,7 @@ public class PersonTableManager extends TableManager<Person> {
 	private static final String DELETE_PERSON_QUERY = "DELETE person, person_attributes "
 			+ "FROM person  INNER JOIN person_attributes  "
 			+ "WHERE person.person_id = person_attributes.person_id and "
-			+ "user_id = ? and person_id = ?";
+			+ "user_id = ? and person.person_id = ?";
 	
 
 	private static final String INSERT_ATTRIBUTE_QUERY = "insert into person_attributes "

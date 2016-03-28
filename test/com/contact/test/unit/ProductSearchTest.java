@@ -1,4 +1,4 @@
-package com.contact.test;
+package com.contact.test.unit;
 
 import java.util.List;
 

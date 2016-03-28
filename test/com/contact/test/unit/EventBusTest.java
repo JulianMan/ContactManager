@@ -1,4 +1,4 @@
-package com.contact.test;
+package com.contact.test.unit;
 
 import org.junit.Assert;
 import org.junit.Test;
