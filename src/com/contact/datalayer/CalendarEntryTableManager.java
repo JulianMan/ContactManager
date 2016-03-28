@@ -14,6 +14,7 @@ import java.util.Map;
 import com.contact.person.Attribute;
 import com.contact.person.Person;
 import com.contact.time.CalendarEntry;
+import com.mysql.jdbc.Statement;
 
 public class CalendarEntryTableManager extends TableManager<CalendarEntry>{
 	
@@ -45,7 +46,7 @@ public class CalendarEntryTableManager extends TableManager<CalendarEntry>{
 	public boolean create(CalendarEntry t) {
 		try
 		{
-			PreparedStatement pstmt = connection.prepareStatement(CREATE_QUERY);
+			PreparedStatement pstmt = connection.prepareStatement(CREATE_QUERY, Statement.RETURN_GENERATED_KEYS);
 			int idx = 1;
 			pstmt.setInt(idx++, t.getUserId());
 			pstmt.setString(idx++, t.getTitle());
@@ -53,12 +54,17 @@ public class CalendarEntryTableManager extends TableManager<CalendarEntry>{
 			pstmt.setLong(idx++, t.getRecurrence());
 			pstmt.setBoolean(idx++, t.isNotified());
 			pstmt.setString(idx++, t.getMessage());
+			
 			pstmt.execute();
 			
+			ResultSet rs = pstmt.getGeneratedKeys();
+		    rs.next();
+		    int entryId = rs.getInt(1);
+		    
 			for (Integer personId : t.getRelatedPeople()) {
 				pstmt = connection.prepareStatement(CREATE_RELATED_PEOPLE_QUERY);
 				idx = 1;
-				pstmt.setInt(idx++, t.getEntryId());
+				pstmt.setInt(idx++, entryId);
 				pstmt.setInt(idx++, personId);
 				pstmt.execute();
 			}
