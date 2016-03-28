@@ -39,7 +39,7 @@ public class PersonTableManager extends TableManager<Person> {
 
 	private static final String UPDATE_ATTRIBUTE_QUERY = "update person_attributes "
 			+ "set name = ?, value = ? "
-			+ "where id = ?";
+			+ "where person_id = ? and id = ?";
 	
 	public PersonTableManager(Connection connection)
 	{
@@ -193,6 +193,7 @@ public class PersonTableManager extends TableManager<Person> {
 		attribute_statement.setString(idx++, attribute.getName());
 		attribute_statement.setString(idx++, attribute.getValue());
 		attribute_statement.setInt(idx++, personId);
+		attribute_statement.setInt(idx++, attribute.getId());
 		
 		return attribute_statement.execute();
 	}
