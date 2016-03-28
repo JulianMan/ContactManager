@@ -36,6 +36,15 @@ body {
   text-align: left;
 }
 
+.product-image {
+	display: block;
+    margin: 0 auto;
+}
+
+.product-text {
+	text-align: center;
+}
+
 .panel-body  {
     word-break:break-all
 }

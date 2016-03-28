@@ -27,6 +27,13 @@ contactManagerControllers.controller('ContactDetailCtrl', function ($scope, $rou
 		// Assign all attributes to new variable for easier access
 		$scope.attributes = data.attributes;
 		
+		$http.get('ProductSearch?store=amazon&search=' 
+				+ encodeURIComponent($scope.attributes.Interests.attributeValue))
+			.success(function(data){
+			$scope.giftideas = data;
+			console.log(data);
+		});
+		
 		// Get primary contact details from attributes (Email, Phone, Picture)
 		$scope.email = data.attributes.Email;
 		$scope.phone = data.attributes.Phone;

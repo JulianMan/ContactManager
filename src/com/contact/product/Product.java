@@ -4,6 +4,7 @@ public class Product {
 
 	protected String name;
 	protected String url;
+	protected String imageUrl;
 	
 	public Product()
 	{
@@ -24,6 +25,14 @@ public class Product {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+	
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 	
 }
