@@ -21,6 +21,7 @@ contactManagerControllers.controller('ContactDetailCtrl', function ($scope, $rou
 	// Set Person ID to Id from request handler - used in GET & POST requests
 	$scope.personId = id;
 	
+	// Get person object
 	$http.get('PersonServlet/' + id).success(function(data){
 		$scope.person = data;
 		
@@ -57,6 +58,81 @@ contactManagerControllers.controller('ContactDetailCtrl', function ($scope, $rou
 
 	});
 	
+	// Get notifications/events by person
+	$http.get('TimeServlet/all/person/' + id).success(function(data){
+		$scope.notifications = data;
+		
+		//$scope.date = data.time.date.month + "/" + data.time.date.day + "/" + data.time.date.year;
+		console.log(data);
+		
+	});
+	
+	// Function to return formatted time
+	$scope.getTime = function (hour, minutes) {
+		if (minutes<10) {
+			minutes = "0" + minutes;
+		}
+		return hour + ":" + minutes;
+	}
+	
+	// Function to open "Add a Loan" modal with populated headings
+	$scope.eventFormLoan = function() {
+		$scope.eventTitle = "Add a New Loan";
+		$scope.eventDescription = "What did you loan?";
+		$scope.addEventForm = true;
+	}
+	
+	// Function to open "Add a Reminder" modal with populated headings
+	$scope.eventFormReminder = function() {
+		$scope.eventTitle = "Add a New Reminder";
+		$scope.eventDescription = "What did you want to be reminded?";
+		$scope.addEventForm = true;
+	}
+	
+	// Function to add a new notification tied to a specific person
+	$scope.addNotification = function (title, content, month, day, year, hour, minute) {
+		var notif = {
+			"entryId":-1,
+			"userId":1,
+			"title":title,
+			"time":{
+				"date":{
+					"year":parseInt(year),
+					"month":parseInt(month),
+					"day":parseInt(day)
+				},
+				"time":{
+					"hour":parseInt(hour),
+					"minute":parseInt(minute),
+					"second":0,
+					"nano":0
+				}
+			},
+			"recurrence":-1,
+			"notified":false,
+			"message":content,
+			"relatedPeople":[parseInt(id)]
+		}
+		
+		// Do POST with new notification
+		var req = {
+		  method: 'POST',
+		  url: 'TimeServlet/',
+		  data: notif
+		}
+		
+		$http(req).then(
+			function(){
+				console.log ("success");
+				// Add reminder temporarily to notifications object so it shows up in UI
+				$scope.notifications[title] = req.data;
+			}, 
+			function(){
+				console.log ("error");
+			}
+		);
+	}
+	
 	// Function to add a new attribute to a specific contact
 	$scope.addAttribute = function (heading, content) {
 		var text = {  
@@ -84,6 +160,8 @@ contactManagerControllers.controller('ContactDetailCtrl', function ($scope, $rou
 	$scope.addLoanAttribute = function (content) {
 		$scope.addAttribute("Load Reminder", content);
 	}
+	
+	
 	
 	// Function called with any "Submit" button press, used to POST entire contact to server
 	$scope.postData = function () {
@@ -115,8 +193,55 @@ contactManagerControllers.controller('ContactDetailCtrl', function ($scope, $rou
 			function(){
 				console.log ("error");
 			}
-		);
-		
+		);	
 	}
 	
+});
+
+contactManagerControllers.controller('ReminderCtrl', function ($scope, $http) {
+	$http.get('TimeServlet/all').success(function(data){
+		$scope.notifications = data;
+	});
+
+	// Function called with any "Submit" button press, used to POST entire reminder to server
+	$scope.postData = function (reminder) {
+		
+		// Updated reminder, set notified flag to false
+		reminder.notified = false;
+		reminder.recurrence = reminder.recurrence * 60;
+		
+		// Do POST with proper email, phone, photo format in JSON file
+		var req = {
+		  method: 'POST',
+		  url: 'TimeServlet/' + reminder.entryId,
+		  data: reminder
+		}
+		
+		$http(req).then(
+			function(){
+				console.log ("success");
+			}, 
+			function(){
+				console.log ("error");
+			}
+		);
+	}
+	
+	// Function to get names of people associated with a reminder
+	$scope.getName = function(relatedPeople) {
+		var length = relatedPeople.length;
+		var names = "";
+		
+		if (length > 0) {
+			names = "<a href='/contact/" + relatedPeople[0] + "'>Associated contact</a>";
+			console.log(relatedPeople[0]);
+			for (var i=0; i<length; i++) {
+				//$http.get('PersonServlet/' + relatedPeople[i]).success(function(data){
+					//names = names + " " + data.name;
+				//});
+			}	
+		}
+		
+		return names;
+	}
 });

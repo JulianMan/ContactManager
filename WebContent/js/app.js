@@ -20,6 +20,10 @@ contactManagerApp.config(['$routeProvider',
         templateUrl: 'partials/contact-detail.html',
         controller: 'ContactDetailCtrl'
       }).
+      when('/reminders', {
+          templateUrl: 'partials/reminders.html',
+          controller: 'ReminderCtrl'
+        }).
       otherwise({
       	//browser address doesn't match either route
         redirectTo: '/contact'

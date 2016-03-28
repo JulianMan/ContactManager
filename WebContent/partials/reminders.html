@@ -1,0 +1,184 @@
+
+<div class="container-fluid">
+    
+  
+  <div class="modalDialog" ng-show="addAttributeForm">
+    <div> 
+      <a href="" title="Close" class="close" ng-click="addAttributeForm=false;">X</a>
+    
+      <h2>Add an Attribute</h2>
+    
+      <form>
+        <div class="form-group">
+          <label for="heading">Heading:</label>
+          <input type="text" class="form-control" id="heading" ng-model="heading">
+        </div>
+        <div class="form-group">
+          <label for="content">Content:</label>
+          <textarea type="text" class="form-control" id="content" ng-model="content"></textarea>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-default" ng-click="addAttribute(heading, content); addAttributeForm=false;">Submit</button>
+          <button class="btn btn-default" ng-click="addAttributeForm=false;">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <div class="modalDialog" ng-show="addEventForm">
+    <div> 
+      <a href="" title="Close" class="close" ng-click="addEventForm=false;">X</a>
+    
+      <h2>{{eventTitle}}</h2>
+    
+      <form>
+        <div class="form-group">
+          <label for="content">Notification Title</label>
+          <input type="text" class="form-control" id="content" ng-model="title">
+        </div>
+        
+        <div class="form-group">
+          <label for="content">{{eventDescription}}</label>
+          <textarea type="text" class="form-control" id="content" ng-model="content"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="content">When do you want to be reminded?</label>
+          <div class="row">
+            <div class="col-sm-4">Month: 
+              <input type="text" class="form-control" id="content" ng-model="month">
+            </div>
+            <div class="col-sm-4">Day: 
+              <input type="text" class="form-control" id="content" ng-model="day">
+            </div>
+            <div class="col-sm-4">Year: 
+              <input type="text" class="form-control" id="content" ng-model="year">
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="content">What time?</label>
+          <div class="row">
+            <div class="col-sm-4">Hour: 
+              <input type="text" class="form-control" id="content" ng-model="hour">
+            </div>
+            <div class="col-sm-4">Minute: 
+              <input type="text" class="form-control" id="content" ng-model="minute">
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <button type="submit" class="btn btn-default" ng-click="addNotification(title, content, month, day, year, hour, minute); addEventForm=false;">Submit</button>
+          <button class="btn btn-default" ng-click="addEventForm=false;">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+    
+  <div class="row">
+    <div class="col-md-4">
+      <!--Sidebar content-->
+      
+      <div class="panel panel-default panel-blue">
+        <!-- Default panel contents -->
+        <div class="panel-heading">Reminder Tools</div>
+      
+        <!-- List group -->
+        <ul class="list-group">
+          <li class="list-group-item"><a href="" ng-click="eventFormReminder();">New Reminder</a></li>
+          <li class="list-group-item"><a href="" ng-click="eventFormLoan();">Add Loan Reminder</a></li>
+          <li class="list-group-item"><a href="" ng-click="addAttributeForm=true">Add Attribute</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-md-5">
+      <div class="panel panel-default panel-light-blue" ng-repeat="notification in notifications | filter:query ">
+        <div class="panel-heading"><strong>Reminder: </strong>{{notification.title}}</div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-md-2">
+              <img class="notification-alarm" src="img/alarm.png">
+            </div>
+            <div ng-hide="editReminder">
+              <div class="col-md-4">
+                <p><strong>Date: </strong>{{notification.time.date.month + "/" + notification.time.date.day + "/" + notification.time.date.year}}</p>
+                <p><strong>Time: </strong>{{getTime(notification.time.time.hour, notification.time.time.minute)}}</p>
+              </div>
+              <div class="col-md-6">
+                <p>{{notification.message}}</p>
+              </div>
+            </div>
+            
+            <div class="col-md-8" ng-show="editReminder">
+              <form ng-show="editReminder">
+                <div class="form-group">
+                  <label for="content">Reminder Title</label>
+                  <input type="text" class="form-control" id="content" ng-model="notification.title">
+                </div>
+                
+                <div class="form-group">
+                  <label for="content">Description</label>
+                  <textarea type="text" class="form-control" id="content" ng-model="notification.message"></textarea>
+                </div>
+                
+                <div class="form-group">
+                  <label for="content">When do you want to be reminded?</label>
+                  <div class="row">
+                    <div class="col-sm-4">Month: 
+                      <input type="text" class="form-control" id="content" ng-model="notification.time.date.month">
+                    </div>
+                    <div class="col-sm-4">Day: 
+                      <input type="text" class="form-control" id="content" ng-model="notification.time.date.day">
+                    </div>
+                    <div class="col-sm-4">Year: 
+                      <input type="text" class="form-control" id="content" ng-model="notification.time.date.year">
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="content">What time?</label>
+                  <div class="row">
+                    <div class="col-sm-4">Hour: 
+                      <input type="text" class="form-control" id="content" ng-model="notification.time.time.hour">
+                    </div>
+                    <div class="col-sm-4">Minute: 
+                      <input type="text" class="form-control" id="content" ng-model="notification.time.time.minute">
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="content">Every how many minutes?</label>
+                  <div class="row">
+                    <div class="col-sm-4">Recurrence: 
+                      <input type="text" class="form-control" id="content" ng-model="notification.recurrence">
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <button type="submit" class="btn btn-default" ng-click="postData(notification); editReminder=false;">Submit</button>
+                  <button class="btn btn-default" ng-click="editReminder=false;">Close</button>
+                </div>
+              </form>
+            </div>
+            
+              
+          </div>
+          <div class="row">
+            <div class="col-md-12 col-md-offset-2">
+              <a href="index.html#/contact/{{notification.relatedPeople[0]}}" ng-show="{{notification.relatedPeople.length>0}}">Associated Contact</a>
+            </div>
+          </div>
+          
+          <button class="btn btn-default" ng-hide="editReminder" ng-click="editReminder=true;">Edit</button>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>
