@@ -1,4 +1,6 @@
-package com.contact.event;
+package com.contact.test.unit;
+
+import com.contact.event.Event;
 
 public class TestEvent extends Event{
 	

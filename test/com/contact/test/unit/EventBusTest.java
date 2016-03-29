@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import com.contact.event.EventBus;
 import com.contact.event.EventListener;
-import com.contact.event.TestEvent;
 
 public class EventBusTest {
 	
