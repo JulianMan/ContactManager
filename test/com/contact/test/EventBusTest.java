@@ -1,13 +1,17 @@
 package com.contact.test;
 
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import com.contact.event.EventBus;
 import com.contact.event.EventListener;
 import com.contact.event.TestEvent;
 
 public class EventBusTest {
+	@Rule
+    public final ExpectedException exception = ExpectedException.none();
 	
 	long timeout = 500;
 	
@@ -25,6 +29,13 @@ public class EventBusTest {
 		
 		EventBus.getInstance().removeListener(TestEvent.class, listener);
 		Assert.assertTrue(listener.receivedEvent());
+	}
+	
+	@Test
+	public void testNullListener()
+	{
+		exception.expect(IllegalArgumentException.class);
+		EventBus.getInstance().addListener(TestEvent.class, null);
 	}
 	
 	@Test

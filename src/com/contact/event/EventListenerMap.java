@@ -15,16 +15,28 @@ public class EventListenerMap {
 	
 	public <E extends Event> void put(Class<E> c, EventListener<E> listener)
 	{
+		if(c == null || listener == null)
+		{
+			throw new IllegalArgumentException("Arguments cannot be null");
+		}
 		listenersMap.put(c, listener);
 	}
 	
 	public <E extends Event> boolean remove(Class<E> c, EventListener<E> listener)
 	{
+		if(c == null || listener == null)
+		{
+			throw new IllegalArgumentException("Arguments cannot be null");
+		}
 		return listenersMap.remove(c, listener);
 	}
 	
 	public <E extends Event> List<EventListener<E>> getListeners(Class<E> c)
 	{
+		if(c == null)
+		{
+			throw new IllegalArgumentException("Arguments cannot be null");
+		}
 		List<EventListener<E>> listeners = new ArrayList<>();
 		for(EventListener<? extends Event> listener : listenersMap.get(c))
 		{
