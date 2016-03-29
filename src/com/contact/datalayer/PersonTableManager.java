@@ -28,11 +28,8 @@ public class PersonTableManager extends TableManager<Person> {
 	private static final String UPDATE_PERSON_QUERY = "update person set "
 			+ "name = ? where "
 			+ "user_id = ? and person_id = ?";
-	private static final String DELETE_PERSON_QUERY = "DELETE person, person_attributes "
-			+ "FROM person  INNER JOIN person_attributes  "
-			+ "WHERE person.person_id = person_attributes.person_id and "
-			+ "user_id = ? and person_id = ?";
-	
+	private static final String DELETE_PERSON_QUERY = "DELETE FROM person WHERE user_id = ? and person_id = ?;";
+	private static final String DELETE_ATTRIBUTES_QUERY = "DELETE FROM person_attributes WHERE person_id = ?";
 
 	private static final String INSERT_ATTRIBUTE_QUERY = "insert into person_attributes "
 			+ "(person_id, name, value) values(?, ?, ?)";
@@ -50,6 +47,7 @@ public class PersonTableManager extends TableManager<Person> {
 	public boolean create(Person t) {
 		try
 		{
+			// Populate default values whenever a person is added
 			if(!t.getAttributes().containsKey("Gift Ideas")) {
 				t.setAttribute(new Attribute("Gift Ideas", ""));
 			}
@@ -58,6 +56,12 @@ public class PersonTableManager extends TableManager<Person> {
 			}
 			if(!t.getAttributes().containsKey("Birthday")) {
 				t.setAttribute(new Attribute("Birthday", ""));
+			}
+			if(!t.getAttributes().containsKey("Phone")) {
+				t.setAttribute(new Attribute("Phone", ""));
+			}
+			if(!t.getAttributes().containsKey("Email")) {
+				t.setAttribute(new Attribute("Email", ""));
 			}
 			
 			PreparedStatement person_statement = connection.prepareStatement(INSERT_PERSON_QUERY, Statement.RETURN_GENERATED_KEYS);
@@ -174,11 +178,18 @@ public class PersonTableManager extends TableManager<Person> {
 	public boolean delete(Person t) {
 		try
 		{
-			PreparedStatement pstmt = connection.prepareStatement(DELETE_PERSON_QUERY);
+			PreparedStatement deleteAttributesStmt = connection.prepareStatement(DELETE_ATTRIBUTES_QUERY);
 			int idx = 1;
-			pstmt.setInt(idx++, t.getUserId());
-			pstmt.setInt(idx++, t.getPersonId());
-			return pstmt.execute();
+			deleteAttributesStmt.setInt(idx++, t.getPersonId());
+			deleteAttributesStmt.execute();
+			
+			PreparedStatement deletePersonStmt = connection.prepareStatement(DELETE_PERSON_QUERY);
+			idx = 1;
+			deletePersonStmt.setInt(idx++, t.getUserId());
+			deletePersonStmt.setInt(idx++, t.getPersonId());
+			deletePersonStmt.execute();
+
+			return true;
 		}
 		catch(SQLException e)
 		{

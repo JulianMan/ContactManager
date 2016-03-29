@@ -21,9 +21,9 @@ public class DataModel {
 		try
 		{
 			Class.forName("com.mysql.jdbc.Driver");
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/contactmanager","contactmanager", "pass");
-			personTableManager = new PersonTableManager(connection);
-			calendarEntryTableManager = new CalendarEntryTableManager(connection);
+			setConnection(DriverManager.getConnection("jdbc:mysql://localhost:3306/contactmanager","contactmanager", "pass"));
+			personTableManager = new PersonTableManager(getConnection());
+			calendarEntryTableManager = new CalendarEntryTableManager(getConnection());
 			
 		}
 		catch(Exception e)
@@ -127,5 +127,13 @@ public class DataModel {
 	{
 		logger.severe("Bad object type " + o.getClass().getName()
 				+ " for operation \"" + operation + "\"");
+	}
+
+	public Connection getConnection() {
+		return connection;
+	}
+
+	private void setConnection(Connection connection) {
+		this.connection = connection;
 	}
 }

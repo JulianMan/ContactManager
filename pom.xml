@@ -85,5 +85,10 @@
 		<artifactId>google-api-services-people</artifactId>
 		<version>v1-rev2-1.21.0</version>
 	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-test</artifactId>
+		<version>4.2.5.RELEASE</version>
+	</dependency>
   </dependencies>
 </project>

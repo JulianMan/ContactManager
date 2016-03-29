@@ -1,4 +1,4 @@
-package com.contact.test;
+package com.contact.test.unit;
 
 import org.junit.Test;
 
@@ -16,7 +16,7 @@ public class DataModelTest {
 	{
 		Person person = new Person();
 		person.setName("Julian Man");
-		person.setUserId(0);
+		person.setUserId(1);
 		
 		boolean success = DataModel.getInstance().create(person);
 		Assert.assertTrue(success);
@@ -27,16 +27,16 @@ public class DataModelTest {
 	{
 		Person person1 = new Person();
 		person1.setName("Julian Man");
-		person1.setUserId(0);
+		person1.setUserId(1);
 		
 		Person person2 = new Person();
 		person2.setName("John Doe");
-		person2.setUserId(0);
+		person2.setUserId(1);
 		
 		DataModel.getInstance().create(person1);
 		DataModel.getInstance().create(person2);
 		
-		List<Person> persons = DataModel.getInstance().read(Person.class, 0);
+		List<Person> persons = DataModel.getInstance().read(Person.class, 1);
 		Assert.assertTrue(persons.contains(person2));
 	}
 	
@@ -45,17 +45,17 @@ public class DataModelTest {
 	{
 		Person person1 = new Person();
 		person1.setName("Julian Man");
-		person1.setUserId(0);
+		person1.setUserId(1);
 		
 		Person person2 = new Person();
 		person2.setName("John Doe");
-		person2.setUserId(0);
+		person2.setUserId(1);
 		
 		DataModel.getInstance().create(person1);
 		DataModel.getInstance().create(person2);
 		DataModel.getInstance().delete(person1);
 		
-		List<Person> persons = DataModel.getInstance().read(Person.class, 0);
+		List<Person> persons = DataModel.getInstance().read(Person.class, 1);
 		Assert.assertTrue(persons.contains(person2) && !persons.contains(person1));
 	}
 	
