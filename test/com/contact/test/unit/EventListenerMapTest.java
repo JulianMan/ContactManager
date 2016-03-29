@@ -11,7 +11,6 @@ import com.contact.event.Event;
 import com.contact.event.EventListener;
 import com.contact.event.EventListenerMap;
 import com.contact.event.PersonCreatedEvent;
-import com.contact.event.TestEvent;
 
 public class EventListenerMapTest {
 
