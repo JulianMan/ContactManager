@@ -7,7 +7,6 @@ import org.junit.rules.ExpectedException;
 
 import com.contact.event.EventBus;
 import com.contact.event.EventListener;
-import com.contact.event.TestEvent;
 
 public class EventBusTest {
 	@Rule
